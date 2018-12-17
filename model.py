@@ -8,11 +8,11 @@ app.config['DEBUG'] = True
 
 db = SQLAlchemy(app)
 
-plays = db.Table("plays", db.metadata,
-    db.Column('result', db.Integer, nullable=False),
-    db.Column('match_id', db.Integer, db.ForeignKey('match.id')),
-    db.Column('player_id', db.Integer, db.ForeignKey('player.id'))
-)
+# plays = db.Table("plays", db.metadata,
+#     db.Column('result', db.Integer, nullable=False),
+#     db.Column('match_id', db.Integer, db.ForeignKey('match.id')),
+#     db.Column('player_id', db.Integer, db.ForeignKey('player.id'))
+# )
 
 
 class Player(db.Model):
@@ -21,7 +21,7 @@ class Player(db.Model):
     name = db.Column(db.String(80), unique=False, nullable=False)
     lastname = db.Column(db.String(80), unique=False, nullable=False)
     elo = db.Column(db.Float(), default=2000)
-    matchs = db.relationship('Match', secondary=plays, back_populates="players")
+    matchs = db.relationship('Play', back_populates="player")
 
     def _repr_(self):
         return "id : {id}, name : {name} , lastname : {lastname}, elo : {elo} ".format(id=self.id, name=self.name, lastname=self.lastname, elo=self.elo)
@@ -30,17 +30,17 @@ class Player(db.Model):
 class Match(db.Model):
     __tablename__ = "match"
     id = db.Column(db.Integer, primary_key=True)
-    players = db.relationship('Player', secondary=plays, back_populates="matchs")
+    players = db.relationship('Play', back_populates="match")
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
         return "id : {id}, date : {date} ".format(id=self.id, date=self.date)
 
 
-# class Play(db.Model):
-#     match_id = db.Column(db.Integer, db.ForeignKey('match.id'), primary_key=True)
-#     player_id = db.Column(db.Integer, db.ForeignKey('player.id'), primary_key=True)
-#     result = db.Column(db.Integer, nullable=False)
+class Play(db.Model):
+    match_id = db.Column(db.Integer, db.ForeignKey('match.id'), primary_key=True)
+    player_id = db.Column(db.Integer, db.ForeignKey('player.id'), primary_key=True)
+    result = db.Column(db.Integer, nullable=False, default=0)
 
-#     player = db.relationship(Player, backref=db.backref("play"))
-#     match = db.relationship(Match, backref=db.backref("play"))
+    player = db.relationship(Player, back_populates="matchs")
+    match = db.relationship(Match, back_populates="players")
