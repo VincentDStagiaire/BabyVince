@@ -36,25 +36,59 @@ def show_matchs():
     players = Player.query.all()
     return render_template("match.html", matchs=matchs, players=players)
 
-@app.route('/add-match',  methods=['POST', 'GET'])
+@app.route('/add-match', methods=['POST', 'GET'])
 def add_match():
+
+    # Creation object Match
     match = Match()
-    dict_players = {
-        "team1player1": request.form.get("team1player1"),
-        "team1player2": request.form.get("team1player2"),
-        "team2player1": request.form.get("team2player1"),
-        "team2player2": request.form.get("team2player2")
-    }
-    result1 = request.form.get("result1")
-    result2 = request.form.get("result2")
-    for clef, player_id in dict_players.items():
-        if player_id:
-            if "team1" in clef:
-                play = Play(result=result1)
-            else:
-                play = Play(result=result2)
-            player = Player.query.filter_by(id=player_id).first()
-            match.players.append(play) 
     db.session.add(match)
     db.session.commit()
+
+    # Get the id of the players
+    team1player1_id = request.form.get("team1player1")
+    team1player2_id = request.form.get("team1player2")
+    team2player1_id = request.form.get("team2player1")
+    team2player2_id = request.form.get("team2player2")
+
+    # Get the results of the match
+    result1 = request.form.get("result1")
+    result2 = request.form.get("result2")
+    
+    # Cration association object : play for each player in the match
+    team1play1 = Play(result=result1, match_id=match.id)
+    team2play1 = Play(result=result2, match_id=match.id)
+    
+    # Set the player and add to the match
+    team1play1.player = Player.query.filter_by(id=team1player1_id).first()
+    team2play1.player = Player.query.filter_by(id=team2player1_id).first()
+
+    match.plays.append(team1play1)
+    match.plays.append(team2play1)
+
+    # Set the second players if they played
+    if team1player2_id:
+        team1play2 = Play(result=result1)
+        team1play2.player = Player.query.filter_by(id=team1player2_id).first()
+        match.plays.append(team1play2)
+    
+    if team2player2_id:
+        team2play2 = Play(result=result2)
+        team2play2.player = Player.query.filter_by(id=team2player2_id).first()
+        match.plays.append(team2play2)
+    
+    # Add in the database and commit
+    db.session.add(match)
+    db.session.commit()
+
     return redirect("/show-matchs")
+
+
+@app.route('/delete-match/<int:id_match>', methods=['GET'])
+def delete_match(id_match):
+    plays = Play.query.filter_by(match_id=id_match).all()
+    for play in plays:
+        db.session.delete(play)
+    match = Match.query.filter_by(id=id_match).first()
+    db.session.delete(match)
+    db.session.commit()
+    return redirect('/show-matchs')
