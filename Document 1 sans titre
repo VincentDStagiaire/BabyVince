@@ -1,0 +1,27 @@
+<VirtualHost *:80>
+       ServerAdmin j.plesniak@expertiz.fr
+       DocumentRoot /home/vincent/git/expert_services
+       ServerName 127.0.0.1
+       
+       CustomLog /var/log/apache2/gescom_access_log combined
+       ErrorLog /var/log/apache2/gescom_error_log
+
+       <Directory />
+               Options FollowSymLinks
+               AllowOverride All
+       </Directory>
+       <Directory /home/vincent/git/expert_services/>
+               Options -Indexes
+               Options FollowSymLinks MultiViews ExecCGI
+               AllowOverride All
+               Require all granted
+	       AddHandler cgi-script .cgi .py
+       </Directory>
+</VirtualHost>
+
+
+<VirtualHost *:98>
+       ServerAdmin j.plesniak@expertiz.fr
+       DocumentRoot /usr/share/phpldapadmin/htdocs/
+</VirtualHost>
+
