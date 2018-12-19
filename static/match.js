@@ -7,11 +7,13 @@ function AddMatch(){
 }
 
 function compare2PlayersID(id1, id2) {
-    if (id1 === id2){
-        return true;
-    }
-    else{
-        return false;
+    if (id1 !== null && id2 !== null){
+        if (id1 === id2 ){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
 

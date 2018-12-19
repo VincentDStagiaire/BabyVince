@@ -29,11 +29,13 @@
                                 {% for match in matchs %}
                                 <tr>
                                     <td> {{ match.date }} </td>
-                                    <td> {% for play in match.plays %}
-                                            {{ play.player.name }}
-                                            {{ play.player.last }}
-                                            {{ play.result }}
-                                            {% endfor %}
+                                    <td>
+                                        {% for team in match.teams %}
+                                            {% for player in team.players %}
+                                                {{ player.name }} {{ player.lastname}}
+                                            {% endfor%}
+                                            {{ team.result }}
+                                        {% endfor %}
                                     </td>
                                     <td> 
                                         <a id="deleteMatch" href="/delete-match/{{ match.id }}">Supprimer</a>
