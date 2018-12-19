@@ -15,42 +15,40 @@ function compare2PlayersID(id1, id2) {
     }
 }
 
-$("button").click(function(event){
-    event.preventDefault();
-    var team1player1 = $("#team1player1-select").val()
-    var team1player2 = $("#team1player2-select").val()
-    var team2player1 = $("#team2player1-select").val()
-    var team2player2 = $("#team2player2-select").val()
+$("#buttonAddMatch").click(function(event){
+    var team1player1 = $("#team1player1-select").val();
+    var team1player2 = $("#team1player2-select").val();
+    var team2player1 = $("#team2player1-select").val();
+    var team2player2 = $("#team2player2-select").val();
 
     // every compare with teamp1 player1
     if (compare2PlayersID(team1player1, team1player2)){
-        alert("Il faut des joueurs différents !")
-        event.stopPropagation();
+        event.preventDefault();
+        alert("Il faut des joueurs différents !");
     };
     if (compare2PlayersID(team1player1, team2player1)){
-        alert("Il faut des joueurs différents !")
-        event.stopPropagation();
+        event.preventDefault();
+        alert("Il faut des joueurs différents !");
     };
     if (compare2PlayersID(team1player1, team2player2)){
-        alert("Il faut des joueurs différents !")
-        event.stopPropagation();
+        event.preventDefault();
+        alert("Il faut des joueurs différents !");
     };
 
     // other compare with team1 player2
     if (compare2PlayersID(team1player2, team2player1)){
-        alert("Il faut des joueurs différents !")
-        event.stopPropagation();
+        event.preventDefault();
+        alert("Il faut des joueurs différents !");
     };
 
     if (compare2PlayersID(team1player2, team2player2)){
-        alert("Il faut des joueurs différents !")
-        event.stopPropagation();
+        event.preventDefault();
+        alert("Il faut des joueurs différents !");
     };
 
     // finish compare with the second team
     if (compare2PlayersID(team2player2, team2player1)){
-        alert("Il faut des joueurs différents !")
-        event.stopPropagation();
+        event.preventDefault();
+        alert("Il faut des joueurs différents !");
     };
-
 });

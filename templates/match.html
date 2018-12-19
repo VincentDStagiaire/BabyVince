@@ -31,6 +31,7 @@
                                     <td> {{ match.date }} </td>
                                     <td> {% for play in match.plays %}
                                             {{ play.player.name }}
+                                            {{ play.player.last }}
                                             {{ play.result }}
                                             {% endfor %}
                                     </td>
@@ -46,7 +47,7 @@
                     <a href="/" id="ComeBackWelcome">Retour à l'accueil</a>
             </div>
             <div id=AddMatch>
-                <form action="/add-match" method="POST">
+                <form action="/add-match" method="POST" id="formAddMatch">
                     <h1>Ajouter un match</h1>
                     <label for="team1player1-select" >Equipe 1</label>
                     <select name="team1player1" id="team1player1-select" required >
