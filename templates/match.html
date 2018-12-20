@@ -1,89 +1,96 @@
-<!doctype html>
-<htlml lang="fr">
 
-    <head>
-        <title>
-            Expertiz Baby
-        </title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    </head>
-
-    <body>
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-            <div id=ShowMatchs>
-                    <h3> Liste des matchs</h3>
-                    <form action=>
-                    <table>
-                            <thead>
-                                <tr>
-                                    <td>Date</td>
-                                    <td> Score </td>
-                                    <td> Action</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for match in matchs %}
-                                <tr>
-                                    <td> {{ match.date }} </td>
-                                    <td>
-                                        {% for team in match.teams %}
-                                            {% for player in team.players %}
-                                                {{ player.name }} {{ player.lastname}}
-                                            {% endfor%}
-                                            {{ team.result }}
-                                        {% endfor %}
-                                    </td>
-                                    <td> 
-                                        <a id="deleteMatch" href="/delete-match/{{ match.id }}">Supprimer</a>
-                                    </td>
-                                </tr>
-                                {% endfor%}
-                            </tbody>
-                        </table>
-                    </form>
-                    <button id="buttonAMatch"  onclick="AddMatch();">Ajouter un match</button>
-                    <a href="/" id="ComeBackWelcome">Retour à l'accueil</a>
+{% extends "base.html" %}
+{% block title %}Expertiz Baby - Matchs{% endblock %}
+{% block content %}
+<div class="container" id=ShowMatchs>
+    <div class="row">
+        <div class="twelve column">
+            <h4> Liste des matchs</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ten columns">
+            <table class="u-full-width">
+                <thead>
+                    <tr>
+                        <td>Date</td>
+                        <td> Score </td>
+                        <td> Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for match in matchs %}
+                    <tr>
+                        <td> {{ match.date }} </td>
+                        <td>
+                            {% for team in match.teams %}
+                            {% for player in team.players %}
+                            {{ player.name }} {{ player.lastname}}
+                            {% endfor%}
+                            {{ team.result }}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a class="button button-primary" id="deleteMatch" href="/delete-match/{{ match.id }}">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+        </div>
+        <div class="two columns">
+            <button class="button button-primary" id="buttonAMatch" onclick="AddMatch();">Ajouter un match</button>
+        </div>
+    </div>
+</div>
+<div id=AddMatch class="container">
+    <div class="row">
+        <div class="twelve columns">
+            <h4>Ajouter un match</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="four columns">
+            <label for="team1player1-select" >Equipe 1</label>
+        </div>
+        <div class="four columns">
+            <label>Score</label>
+        </div>
+        <div class="four columns">
+            <label for="team2player2-select">Equipe 2</label>
+        </div>
+    </div>
+    <form action="/add-match" method="POST" id="formAddMatch"></form>
+         <div class="row">
+            <div class="four columns">
+                <select class="u-full-width" name="team1-select" id="team1-select" size="5" required multiple >
+                            {% for player in players %}
+                                <option  value= {{ player.id }} > {{ player.name }}  {{ player.lastname }} </option>
+                            {% endfor%}
+                </select>
             </div>
-            <div id=AddMatch>
-                <form action="/add-match" method="POST" id="formAddMatch">
-                    <h1>Ajouter un match</h1>
-                    <label for="team1player1-select" >Equipe 1</label>
-                    <select name="team1player1" id="team1player1-select" required >
-                        <option id="defaultOption" value=""> - </option>
-                        {% for player in players %}
-                            <option  value= {{ player.id }} > {{ player.name }}  {{ player.lastname }} </option>
-                        {% endfor%}
-                    </select>
-                    <label for="team1player2-select">Joueur 2</label>
-                    <select name="team1player2" id="team1player2-select" >
-                        <option id="defaultOption" value=""> - </option>
-                        {% for player in players %}
-                            <option  value= {{ player.id }} > {{ player.name }}  {{ player.lastname }} </option>
-                        {% endfor%}
-                    </select>
-                    <input id="result1" type="number" name="result1" value="" min="0" max="10" required/> - <input id="result2" type="number" name="result2" value="" min="0" max="10" required/>
-                    <label for="team2player1-select">Joueur 1</label>
-                    <select name="team2player1" id="team2player1-select"  required >
-                        <option id="defaultOption" value=""> - </option>
-                        {% for player in players %}
-                            <option  value= {{ player.id }} > {{ player.name }}  {{ player.lastname }} </option>
-                        {% endfor%}
-                    </select>
-                    <label for="team2player2-select">Joueur 2</label>
-                    <select name="team2player2" id="team2player2-select" >
-                        <option id="defaultOption" value=""> - </option>
-                        {% for player in players %}
-                            <option   value= {{ player.id }} > {{ player.name  }}  {{ player.lastname }} </option>
-                        {% endfor%}
-                    </select>
-                    <br>
-                    <button id="buttonAddMatch" type="submit" value="">Valider</button>
-                </form>
+            <div class="four columns">
+                <input class="u-full-width" id="result1" type="number" name="result1" value="" min="0" max="10" required/>
+                <label> - </label>
+                <input class="u-full-width" id="result2" type="number" name="result2" value="" min="0" max="10" required/>
             </div>
-    </body>
-</htlml>
+            <div class="four columns">
+                <select class="u-full-width" name="team2-select" id="team2-select" size="5" required multiple >
+                        {% for player in players %}
+                            <option  value= {{ player.id }} > {{ player.name }}  {{ player.lastname }} </option>
+                        {% endfor%}
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="twelve columns">
+                    <button class="button button-primary" id="buttonAddMatch" type="submit" value="">Valider</button>
+                    <button class="button button-primary" id="buttonCancelAddMatch" onclick="cancelAddMatch();"> Annuler </button>
+            </div>
+        </div>
+        </div>
+     </form>
+</div>
 <script src='{{ url_for('static', filename='match.js') }}'></script>
+
+{% endblock %}

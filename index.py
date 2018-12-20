@@ -36,15 +36,12 @@ def show_matchs():
 
 @app.route('/add-match', methods=['POST', 'GET'])
 def add_match():
-
     # Creation object Match
     match = Match()
-
-    # Get the id of the players
-    team1player1_id = request.form.get("team1player1")
-    team1player2_id = request.form.get("team1player2")
-    team2player1_id = request.form.get("team2player1")
-    team2player2_id = request.form.get("team2player2")
+    
+    # Get the players
+    team1_players = request.form.getlist("team1-select")
+    team2_players = request.form.getlist("team2-select")
 
     # Get the results of the match
     result1 = request.form.get("result1")
@@ -59,19 +56,19 @@ def add_match():
     # team2play1 = Play(result=result2, match_id=match.id)
     
     # Set the player and add to the match
-    team1player1 = Player.query.filter_by(id=team1player1_id).first()
-    team2player1 = Player.query.filter_by(id=team2player1_id).first()
+    team1player1 = Player.query.filter_by(id=int(team1_players[0])).first()
+    team2player1 = Player.query.filter_by(id=int(team2_players[0])).first()
 
     team1.players.append(team1player1)
     team2.players.append(team2player1)
 
     # Set the second players if they played
-    if team1player2_id:
-        team1player2 = Player.query.filter_by(id=team1player2_id).first()
+    if len(team1_players) > 1:
+        team1player2 = Player.query.filter_by(id=int(team1_players[1])).first()
         team1.players.append(team1player2)
     
-    if team2player2_id:
-        team2player2 = Player.query.filter_by(id=team2player2_id).first()
+    if len(team2_players) > 1:
+        team2player2 = Player.query.filter_by(id=int(team2_players[1])).first()
         team2.players.append(team2player2)
 
     # Add the both teams to the matchs

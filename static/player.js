@@ -3,5 +3,11 @@ $(document).ready(function(){
 });
 
 function AddPlayer(){
+    $("#ShowPlayers").hide();
     $("#AddPlayer").show();
+}
+
+function CancelAddPlayer(){
+    $("#ShowPlayers").show();
+    $("#AddPlayer").hide();
 }
