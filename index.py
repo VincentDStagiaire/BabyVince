@@ -8,11 +8,17 @@ def index(name=None):
 
 @app.route('/show-players', methods=['GET'])
 def show_players():
+    """
+    We get all of the players and send it to the templates which show them
+    """
     players = Player.query.all()
     return render_template("player.html", players=players)
 
 @app.route('/add-player', methods=['POST', 'GET'])
 def add_player():
+    """
+    We create a player with his name and lastname
+    """
     name_player = request.form.get("name_player")
     lastname_player = request.form.get("lastname_player")
     player = Player(name=name_player, lastname=lastname_player)
@@ -23,6 +29,11 @@ def add_player():
 
 @app.route('/delete-player/<int:id_player>', methods=['GET'])
 def delete_player(id_player):
+    """
+    We create the player object and delete it 
+
+    :id_player(int) : the player's id
+    """
     player = Player.query.filter_by(id=id_player).first()
     db.session.delete(player)
     db.session.commit()
@@ -30,12 +41,18 @@ def delete_player(id_player):
 
 @app.route('/show-matchs', methods=['GET'])
 def show_matchs():
+    """
+    We get all of the matchs and send its to the template
+    """
     matchs = Match.query.all()
     players = Player.query.all()
     return render_template("match.html", matchs=matchs, players=players)
 
 @app.route('/add-match', methods=['POST', 'GET'])
 def add_match():
+    """
+    We create a match object, 2 teamps and get the players 
+    """
     # Creation object Match
     match = Match()
     
@@ -84,6 +101,11 @@ def add_match():
 
 @app.route('/delete-match/<int:id_match>', methods=['GET'])
 def delete_match(id_match):
+    """
+    Delete a match
+
+    :id_match(int) : the match id
+    """
     #creation object match and all teams of the  match
     match = Match.query.filter_by(id=id_match).first()
     teams = Team.query.filter_by(match_id=id_match).all()

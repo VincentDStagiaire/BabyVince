@@ -9,6 +9,7 @@ app.config['session_options'] = {"autoflush": False}
 
 db = SQLAlchemy(app)
 
+# the table necessary for the join between team and players
 plays = db.Table("plays", db.metadata,
     db.Column('team_id', db.Integer, db.ForeignKey('team.id')),
     db.Column('player_id', db.Integer, db.ForeignKey('player.id'))
