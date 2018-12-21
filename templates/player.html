@@ -1,52 +1,69 @@
 {% extends "base.html" %}
 {% block title %}Expertiz Baby - Joueurs {% endblock %}
 {% block content %}
-<div class="container">
-    <div class='row'>
-        <div class="twelve column"><h4>Voici l'ensemble des joueurs</h4></div>
+<div class="columns" id="ShowPlayers">
+    <div class='column is-one-fifth'></div>
+    <div class="column">
+        <div class="card">
+            <header class="card-header">
+                <h3 class="title">Voici l'ensemble des joueurs
+                </h3>
+            </header>
+            <div class="card-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Nom</td>
+                            <td>Prenom </td>
+                            <td> Niveau </td>
+                            <td> Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in players %}
+                        <tr>
+                            <td> {{ player.name }}</td>
+                            <td> {{ player.lastname }}</td>
+                            <td> {{ player.elo }}</td>
+                            <td><a class="button is-primary" id="deletePlayer" href="/delete-player/{{ player.id }}">Supprimer</a></td>
+                        </tr>
+                        {% endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <div class="row" id="ShowPlayers" >
-        <div class="ten columns">
-            <table class="u-full-width">
-                <thead>
-                    <tr>
-                        <td>Nom</td>
-                        <td>Prenom </td>
-                        <td> Niveau </td>
-                        <td> Action</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in players %}
-                    <tr>
-                        <td> {{ player.name }}</td>
-                        <td> {{ player.lastname }}</td>
-                        <td> {{ player.elo }}</td>
-                        <td><a class="button button-primary" id="deletePlayer" href="/delete-player/{{ player.id }}">Supprimer</a></td>
-                    </tr>
-                    {% endfor%}
-                </tbody>
-            </table>
-        </div>
-        <div class="two columns">
-            <button id="buttonAPlayer" onclick="AddPlayer();">Ajouter un joueur</button>
-        </div>
+    <div class="column">
+        <button class="button is-primary" id="buttonAPlayer" onclick="AddPlayer();">Ajouter un joueur</button>
     </div>
 </div>
-<div class="container">
-    <div class="row" id="AddPlayer" >
-        <div class="eleven columns">
+<div class="columns" id="AddPlayer">
+        <div class='column is-one-fifth'></div>
+        <div class="column is-two-fifths">
             <form action="/add-player" method="POST">
-                <h4> Ajouter un joueur</h4>
-                <label for="lastname_player">Prénom</label>
-                <input class="u-full-width" id="lastname_player" type="text" name="lastname_player" value="" required/><br/>
-                <label for="name_player">Nom</label>
-                <input class="u-full-width" id="name_player" type="text" name="name_player" value="" required/><br/>
-                <button class="button-primary" type="submit" name="validateNewPlayer">Valider</button>
-                <button class="button-primary" id="buttonAPlayer" onclick="CancelAddPlayer();">Annuler</button>
+                <h3 class="title"> Ajouter un joueur</h3>
+                <div class="field">
+                    <label class="label" for="lastname_player">Prénom</label>
+                    <div class="control">
+                        <input class="input" id="lastname_player" type="text" name="lastname_player" value="" required/>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label"  for="name_player">Nom</label>
+                    <div class="control">
+                            <input class="input" id="name_player" type="text" name="name_player" value="" required/>
+                    </div>
+                 </div>
+                 <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-primary" type="submit" name="validateNewPlayer">Valider</button>
+                    </div>
+                    <div class="control">
+                            <button class="button is-primary" id="buttonAPlayer" onclick="CancelAddPlayer();">Annuler</button>
+                    </div>
+                </div>
             </form>
         </div>
-    </div>
 </div>
 
 <script src='{{ url_for('static', filename='player.js') }}'></script>

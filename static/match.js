@@ -65,14 +65,14 @@ function cancelAddMatch(){
 
 $("team2-select").change(function (event) {
     if($("select option:selected").length > 2) {
-        alert("Pas plus de 2 joueurs par équipes, différent bien sûr :P  ");
+        alert("Si c'est marqué important, c'est qu'il faut lire :P ");
         event.preventDefault();
     }
 });
 
 $("#team1-select").change(function (event) {
     if($("select option:selected").length > 2) {
-        alert("Pas plus de 2 joueurs par équipes, différent bien sûr :P  ");
+        alert("Si c'est marqué important, c'est qu'il faut lire :P ");
         event.preventDefault();
     }
 });

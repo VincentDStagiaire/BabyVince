@@ -2,94 +2,128 @@
 {% extends "base.html" %}
 {% block title %}Expertiz Baby - Matchs{% endblock %}
 {% block content %}
-<div class="container" id=ShowMatchs>
-    <div class="row">
-        <div class="twelve column">
-            <h4> Liste des matchs</h4>
+
+<div class="columns" id=ShowMatchs>
+    <div class='column is-one-fifth'></div>
+    <div class="column"  >
+        <div class="card">
+            <header class="card-header">
+                    <h4 class="title" > Liste des matchs</h4>
+            </header>
+            <div class="card-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Date</td>
+                            <td>Équipe 1</td>
+                            <td> Score </td>
+                            <td>Équipe 1</td>
+                            <td> Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for match in matchs %}
+                        <tr>
+                            <td> {{ match.date }} </td>
+                            <td>
+                                {{ match.teams[0].players[0].lastname }} {{ match.teams[0].players[0].name }} 
+                                {% if match.teams[0].players[1] %}
+                                & {{ match.teams[0].players[1].lastname }} {{ match.teams[0].players[1].name }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <b> {{ match.teams[0].result }} - {{ match.teams[1].result }}  </b>
+                            </td>
+                            <td>
+                                {{ match.teams[1].players[0].lastname }} {{ match.teams[1].players[0].name }} 
+                                {% if match.teams[1].players[1] %}
+                                & {{ match.teams[1].players[1].lastname }} {{ match.teams[1].players[1].name }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a class="button is-primary" id="deleteMatch" href="/delete-match/{{ match.id }}">Supprimer</a>
+                            </td>
+                        </tr>
+                        {% endfor%}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="ten columns">
-            <table class="u-full-width">
-                <thead>
-                    <tr>
-                        <td>Date</td>
-                        <td> Score </td>
-                        <td> Action</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for match in matchs %}
-                    <tr>
-                        <td> {{ match.date }} </td>
-                        <td>
-                            {% for team in match.teams %}
-                            {% for player in team.players %}
-                            {{ player.name }} {{ player.lastname}}
-                            {% endfor%}
-                            {{ team.result }}
-                            {% endfor %}
-                        </td>
-                        <td>
-                            <a class="button button-primary" id="deleteMatch" href="/delete-match/{{ match.id }}">Supprimer</a>
-                        </td>
-                    </tr>
-                    {% endfor%}
-                </tbody>
-            </table>
-        </div>
-        <div class="two columns">
-            <button class="button button-primary" id="buttonAMatch" onclick="AddMatch();">Ajouter un match</button>
-        </div>
+    <div class="column">
+        <button class="button is-primary" id="buttonAMatch" onclick="AddMatch();">Ajouter un match</button>
     </div>
 </div>
-<div id=AddMatch class="container">
-    <div class="row">
-        <div class="twelve columns">
-            <h4>Ajouter un match</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="four columns">
-            <label for="team1player1-select" >Equipe 1</label>
-        </div>
-        <div class="four columns">
-            <label>Score</label>
-        </div>
-        <div class="four columns">
-            <label for="team2player2-select">Equipe 2</label>
-        </div>
-    </div>
-    <form action="/add-match" method="POST" id="formAddMatch"></form>
-         <div class="row">
-            <div class="four columns">
-                <select class="u-full-width" name="team1-select" id="team1-select" size="5" required multiple >
+<div id=AddMatch class="columns">
+    <div class='column is-one-fifth'></div>
+    <div class="column is-two-fifths ">
+        <form action="/add-match" method="POST" id="formAddMatch">
+            <h3 class="title" >Ajouter un match</h3>
+
+            <div class="field">
+                    <label class="label" >Équipe 1 </label>
+                    <div class="control">
+                        <div class="select is-multiple">
+                            <select  name="team1-select" id="team1-select"  multiple required >
+                                        {% for player in players %}
+                                            <option  value= {{ player.id }} > {{ player.name }}  {{ player.lastname }} </option>
+                                        {% endfor%}
+                            </select>
+                        </div>
+                    </div>
+            </div>
+            <div class="field">
+                <label class="label">Score</label>
+                <div class="control">
+                    <input class="input" id="result1" type="number" name="result1" value="" min="0" max="10" required/>
+                    <label> - </label>
+                    <input class="input" id="result2" type="number" name="result2" value="" min="0" max="10" required/>
+                </div>
+             </div>
+             <div class="field">
+                <label class="label" >Equipe 2</label>
+                <div class="control">
+                    <div class="select is-multiple">
+                        <select name="team2-select" id="team2-select"  multiple required >
                             {% for player in players %}
                                 <option  value= {{ player.id }} > {{ player.name }}  {{ player.lastname }} </option>
                             {% endfor%}
-                </select>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="four columns">
-                <input class="u-full-width" id="result1" type="number" name="result1" value="" min="0" max="10" required/>
-                <label> - </label>
-                <input class="u-full-width" id="result2" type="number" name="result2" value="" min="0" max="10" required/>
+            <div class="field is-grouped">
+                <div class="control">
+                    <button class="button is-primary" id="buttonAddMatch" type="submit" value="">Valider</button>
+                </div>
+                <div class="control">
+                    <button class="button is-primary" id="buttonCancelAddMatch" onclick="cancelAddMatch();"> Annuler </button>
+                </div>
             </div>
-            <div class="four columns">
-                <select class="u-full-width" name="team2-select" id="team2-select" size="5" required multiple >
-                        {% for player in players %}
-                            <option  value= {{ player.id }} > {{ player.name }}  {{ player.lastname }} </option>
-                        {% endfor%}
-                </select>
-            </div>
+        </form>
+    </div>
+    <div class="column ">
+        <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                    Important
+                    </p>
+                    <a href="#" class="card-header-icon" aria-label="more options">
+                    <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                    </a>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                    Il faut choisir maximum 2 joueurs par équipe.<br>
+                    CTRL + clic pour en sélectionner plusieurs. <br>
+                    Un même joueur ne peut pas jouer dans les 2 équipes,<br>
+                    ou avec lui même dans une éuiqpe ;). 
+                    </div>
+                </div>
         </div>
-        <div class="row">
-            <div class="twelve columns">
-                    <button class="button button-primary" id="buttonAddMatch" type="submit" value="">Valider</button>
-                    <button class="button button-primary" id="buttonCancelAddMatch" onclick="cancelAddMatch();"> Annuler </button>
-            </div>
-        </div>
-        </div>
-     </form>
+    </div>
 </div>
 <script src='{{ url_for('static', filename='match.js') }}'></script>
 
