@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %} Aïe ... erreur interne {% endblock %}
+{% block content %}
+<img src="{{ url_for('static', filename='image_error_500.jpg') }}" alt="Erreur 500 : retourner à l'accueil">
+<h1>Vous pouvez cliquer sur le bouton "Accueil" pour retourner à l'accueil</h1>
+{% endblock %}

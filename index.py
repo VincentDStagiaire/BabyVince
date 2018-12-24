@@ -119,3 +119,11 @@ def delete_match(id_match):
     db.session.delete(match)
     db.session.commit()
     return redirect(url_for(".show_matchs"))
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error_404.html'), 404
+
+@app.errorhandler(500)
+def internal_serveur_error(error):
+    return render_template('error_500.html'), 500

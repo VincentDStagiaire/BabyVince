@@ -14,7 +14,7 @@ function cancelAddMatch(){
 }
 
 function compare2PlayersID(id1, id2) {
-    if (id1 !== null && id2 !== null){
+    if (id1 !== null && id2 !== null && typeof(id1) !== "undefined" && typeof(id2) !== "undefined" ){
         if (id1 === id2 ){
             return true;
         }
@@ -35,7 +35,6 @@ $("#buttonAddMatch").click(function(event){
     var team1player2 = $("#team1-select").val()[1];
     var team2player1 = $("#team2-select").val()[0];
     var team2player2 = $("#team2-select").val()[1];
-    console.log("coucouc :", team1player1);
 
     // every compare with teamp1 player1
     if (compare2PlayersID(team1player1, team1player2)){
