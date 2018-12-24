@@ -3,7 +3,7 @@ from model import Player, Match, app, db, plays, Team
 from datetime import datetime
 
 @app.route('/')
-def index(name=None):
+def index():
     return render_template("welcome.html")
 
 @app.route('/show-players', methods=['GET'])
@@ -14,7 +14,7 @@ def show_players():
     players = Player.query.all()
     return render_template("player.html", players=players)
 
-@app.route('/add-player', methods=['POST', 'GET'])
+@app.route('/add-player', methods=['POST'])
 def add_player():
     """
     We create a player with his name and lastname
@@ -24,7 +24,7 @@ def add_player():
     player = Player(name=name_player, lastname=lastname_player)
     db.session.add(player)
     db.session.commit()
-    return redirect('/show-players')
+    return redirect(url_for('.show_players'))
 
 
 @app.route('/delete-player/<int:id_player>', methods=['GET'])
@@ -37,7 +37,7 @@ def delete_player(id_player):
     player = Player.query.filter_by(id=id_player).first()
     db.session.delete(player)
     db.session.commit()
-    return redirect('/show-players')
+    return redirect(url_for('.show_players'))
 
 @app.route('/show-matchs', methods=['GET'])
 def show_matchs():
@@ -96,7 +96,7 @@ def add_match():
     db.session.add(match)
     db.session.commit()
 
-    return redirect("/show-matchs")
+    return redirect(url_for(".show_matchs"))
 
 
 @app.route('/delete-match/<int:id_match>', methods=['GET'])
@@ -118,4 +118,4 @@ def delete_match(id_match):
     # delete the match
     db.session.delete(match)
     db.session.commit()
-    return redirect('/show-matchs')
+    return redirect(url_for(".show_matchs"))

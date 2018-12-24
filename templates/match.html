@@ -41,7 +41,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a class="button is-primary" id="deleteMatch" href="/delete-match/{{ match.id }}">Supprimer</a>
+                                <a class="button is-primary" id="deleteMatch" href={{ url_for('delete_match', id_match=match.id) }}>Supprimer</a>
                             </td>
                         </tr>
                         {% endfor%}

@@ -119,8 +119,7 @@ ALTER TABLE public.plays OWNER TO postgres;
 CREATE TABLE public.team (
     id integer NOT NULL,
     result integer NOT NULL,
-    match_id integer,
-    player_id integer
+    match_id integer
 );
 
 
@@ -173,7 +172,14 @@ ALTER TABLE ONLY public.team ALTER COLUMN id SET DEFAULT nextval('public.team_id
 --
 
 COPY public.match (id, date) FROM stdin;
-1	2018-12-19
+6	2018-12-20
+8	2018-12-20
+9	2018-12-21
+10	2018-12-21
+11	2018-12-21
+13	2018-12-21
+14	2018-12-21
+15	2018-12-21
 \.
 
 
@@ -181,7 +187,7 @@ COPY public.match (id, date) FROM stdin;
 -- Name: match_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.match_id_seq', 1, true);
+SELECT pg_catalog.setval('public.match_id_seq', 15, true);
 
 
 --
@@ -190,9 +196,10 @@ SELECT pg_catalog.setval('public.match_id_seq', 1, true);
 
 COPY public.player (id, name, lastname, elo) FROM stdin;
 1	DÉVIGNE	Vincent	2000
-2	Jérémy	JAMES	2000
-3	COLLINS	Sam	2000
-4	MON<3	Lépo	2000
+2	JAMES	Jérémy	2000
+3	CÔLLINS	Sam	2000
+4	MON<3	Léo	2000
+8	SORLIN	Antho	2000
 \.
 
 
@@ -200,7 +207,7 @@ COPY public.player (id, name, lastname, elo) FROM stdin;
 -- Name: player_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.player_id_seq', 4, true);
+SELECT pg_catalog.setval('public.player_id_seq', 8, true);
 
 
 --
@@ -208,10 +215,36 @@ SELECT pg_catalog.setval('public.player_id_seq', 4, true);
 --
 
 COPY public.plays (team_id, player_id) FROM stdin;
-1	1
-1	2
-2	3
-2	4
+12	3
+11	1
+11	2
+12	4
+16	3
+15	1
+15	2
+16	4
+17	1
+18	3
+17	2
+18	4
+19	1
+20	3
+19	2
+20	4
+21	1
+22	4
+21	2
+22	8
+26	3
+25	1
+25	2
+26	4
+28	3
+27	1
+27	2
+28	4
+30	2
+29	1
 \.
 
 
@@ -219,9 +252,23 @@ COPY public.plays (team_id, player_id) FROM stdin;
 -- Data for Name: team; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.team (id, result, match_id, player_id) FROM stdin;
-1	10	1	\N
-2	5	1	\N
+COPY public.team (id, result, match_id) FROM stdin;
+11	10	6
+12	8	6
+15	10	8
+16	8	8
+17	10	9
+18	8	9
+19	10	10
+20	8	10
+21	10	11
+22	8	11
+25	10	13
+26	0	13
+27	10	14
+28	5	14
+29	5	15
+30	10	15
 \.
 
 
@@ -229,7 +276,7 @@ COPY public.team (id, result, match_id, player_id) FROM stdin;
 -- Name: team_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.team_id_seq', 2, true);
+SELECT pg_catalog.setval('public.team_id_seq', 30, true);
 
 
 --
@@ -278,14 +325,6 @@ ALTER TABLE ONLY public.plays
 
 ALTER TABLE ONLY public.team
     ADD CONSTRAINT team_match_id_fkey FOREIGN KEY (match_id) REFERENCES public.match(id);
-
-
---
--- Name: team_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.team
-    ADD CONSTRAINT team_player_id_fkey FOREIGN KEY (player_id) REFERENCES public.player(id);
 
 
 --

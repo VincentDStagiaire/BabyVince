@@ -25,8 +25,8 @@
                             <td> {{ player.name }}</td>
                             <td> {{ player.lastname }}</td>
                             <td> {{ player.elo }}</td>
-                            <td><a class="button is-primary" id="deletePlayer" href="/delete-player/{{ player.id }}">Supprimer</a></td>
-                        </tr>
+                            <td><a class="button is-primary" id="deletePlayer" href= {{ url_for('delete_player', id_player=player.id) }} >Supprimer</a></td>
+                        </tr> 
                         {% endfor%}
                     </tbody>
                 </table>
@@ -68,5 +68,3 @@
 
 <script src='{{ url_for('static', filename='player.js') }}'></script>
 {% endblock %}
-{% block footer %}
-{%  endblock %}
