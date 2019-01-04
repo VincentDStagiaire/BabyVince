@@ -6,6 +6,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/vincentBaby'
 app.config['DEBUG'] = True
 app.config['session_options'] = {"autoflush": False}
+app.config['SECRET_KEY'] = "coucou"
 
 db = SQLAlchemy(app)
 
@@ -26,6 +27,11 @@ class Player(db.Model):
 
     def _repr_(self):
         return "id : {id}, name : {name} , lastname : {lastname}, elo : {elo} ".format(id=self.id, name=self.name, lastname=self.lastname, elo=self.elo)
+    
+    def get_tuple_player(self):
+        fullname = "{0} {1}".format(self.name, self.lastname)
+        return (self.id, fullname)
+
 class Match(db.Model):
     __tablename__ = "match"
     id = db.Column(db.Integer, primary_key=True)

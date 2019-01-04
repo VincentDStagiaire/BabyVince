@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Expertiz Baby - Ajouter des joueurs {% endblock %}
+{% block content %}
+<div class="columns" id="AddPlayer">
+        <div class='column is-one-fifth'></div>
+        <div class="column is-two-fifths">
+            <form action="/add-player" method="POST">
+                {{ form.csrf_token }}
+                <h3 class="title"> Ajouter un joueur</h3>
+                <div class="field">
+                        {{ form.name_player.label }} 
+                    <div class="control">
+                            {{ form.name_player(size=20, class="input")}}
+                            {{ form.name }}
+                            {% if form.name_player.errors %}
+                                <ul class="errors">{% for error in form.name_player.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                            {% endif %}
+                    </div>
+                </div>
+                <div class="field">
+                        {{ form.last_name_player.label }}
+                    <div class="control">
+                            {{ form.last_name_player(size=20, class="input")}}
+                            {{ form.last_name }}
+                            {% if form.last_name_player.errors %}
+                                 <ul class="errors">{% for error in form.last_name_player.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                             {% endif %}
+                    </div>
+                 </div>
+                 <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-primary" type="submit" name="validateNewPlayer">Valider</button>
+                    </div>
+                    <div class="control">
+                            <a class="button is-primary" id="buttonAPlayer" href= {{ url_for("show_players") }}>Annuler</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+</div>
+{% endblock %}

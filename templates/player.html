@@ -34,37 +34,8 @@
         </div>
     </div>
     <div class="column">
-        <button class="button is-primary" id="buttonAPlayer" onclick="AddPlayer();">Ajouter un joueur</button>
+        <a class="button is-primary" id="buttonAPlayer" href={{ url_for("add_player") }}>Ajouter un joueur</a>
     </div>
 </div>
-<div class="columns" id="AddPlayer">
-        <div class='column is-one-fifth'></div>
-        <div class="column is-two-fifths">
-            <form action="/add-player" method="POST">
-                <h3 class="title"> Ajouter un joueur</h3>
-                <div class="field">
-                    <label class="label" for="lastname_player">Prénom</label>
-                    <div class="control">
-                        <input class="input" id="lastname_player" type="text" name="lastname_player" value="" required/>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label"  for="name_player">Nom</label>
-                    <div class="control">
-                            <input class="input" id="name_player" type="text" name="name_player" value="" required/>
-                    </div>
-                 </div>
-                 <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-primary" type="submit" name="validateNewPlayer">Valider</button>
-                    </div>
-                    <div class="control">
-                            <button class="button is-primary" id="buttonAPlayer" onclick="CancelAddPlayer();">Annuler</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-</div>
-
 <script src='{{ url_for('static', filename='player.js') }}'></script>
 {% endblock %}
